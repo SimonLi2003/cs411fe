@@ -1,38 +1,40 @@
-import { Button, Col, Layout, Row } from "antd";
+import { Col, Layout, Row } from "antd";
 
 const { Header } = Layout;
 
 import LoginComponent from "./LoginComponent";
 import SignUpComponent from "./SignUpComponent";
+import UserComponent from "./UserComponent";
 
 interface Props {
   isLoggedIn: boolean;
+  userID: number;
   signOutOnClick: () => void;
   signInOnSuccess: () => void;
+  loginSetUserID: (userID: number) => void;
 }
 
 function HeaderComponent({
   isLoggedIn,
+  userID,
   signOutOnClick,
   signInOnSuccess,
+  loginSetUserID,
 }: Props) {
   return (
     <Header>
       <Row justify={"end"}>
         {isLoggedIn && (
           <Col>
-            <Button
-              shape="round"
-              style={{ marginRight: "20px" }}
-              onClick={signOutOnClick}
-            >
-              Signout
-            </Button>
+            <UserComponent userID={userID} signOutOnClick={signOutOnClick} />
           </Col>
         )}
         {!isLoggedIn && (
           <Col>
-            <LoginComponent onSuccess={signInOnSuccess} />
+            <LoginComponent
+              signInOnSuccess={signInOnSuccess}
+              loginSetUserID={loginSetUserID}
+            />
             <SignUpComponent />
           </Col>
         )}

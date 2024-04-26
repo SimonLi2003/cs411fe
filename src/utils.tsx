@@ -11,7 +11,6 @@ export const signUp = (credential: any) => {
     method: "POST",
     body: formData,
   }).then((response) => {
-    console.log(response);
     if (response.status !== 200) {
       throw Error("Fail to register");
     }
@@ -27,9 +26,56 @@ export const Login = (credential: any) => {
   return fetch(loginURL, {
     method: "POST",
     body: formData,
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw Error("Fail to Login");
+      }
+      return response.text();
+    })
+    .then((text) => {
+      const userID = Number(text);
+      return userID;
+    });
+};
+
+const updateURL = `${SERVER_ORIGIN}/user/updateAll`;
+export const UpdateAll = (userID: number, credential: any) => {
+  const formData = new FormData();
+  formData.append("userID", userID.toString());
+  if (credential.username != undefined) {
+    formData.append("newUserName", credential.username);
+  }
+
+  if (credential.email != undefined) {
+    formData.append("newUserEmail", credential.email);
+  }
+
+  if (credential.password != undefined) {
+    formData.append("newUserPassword", credential.password);
+  }
+
+  return fetch(updateURL, {
+    method: "PUT",
+    body: formData,
   }).then((response) => {
     if (response.status !== 200) {
-      throw Error("Fail to Login");
+      throw Error("Fail to Update");
+    }
+  });
+};
+
+const deleteURL = `${SERVER_ORIGIN}/user/deleteUser`;
+export const DeleteUser = (userID: number) => {
+  const formData = new FormData();
+  formData.append("userID", userID.toString());
+
+  return fetch(deleteURL, {
+    method: "DELETE",
+    body: formData,
+  }).then((response) => {
+    if (response.status !== 200) {
+      throw Error("Fail to Delete");
     }
   });
 };

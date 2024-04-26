@@ -1,5 +1,5 @@
 import { Button, Form, FormInstance, Modal, message, Input } from "antd";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { LockOutlined, UserOutlined, MailOutlined } from "@ant-design/icons";
 import { signUp } from "../utils";
 import { useState } from "react";
 
@@ -42,7 +42,11 @@ function SignUpComponent() {
         footer={null}
         destroyOnClose={true}
       >
-        <Form initialValues={{ remember: true }} onFinish={onFinish} form={form}>
+        <Form
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          form={form}
+        >
           <Form.Item
             name="username"
             rules={[{ required: true, message: "Please input your Username!" }]}
@@ -53,7 +57,7 @@ function SignUpComponent() {
             name="email"
             rules={[{ required: true, message: "Please input your Email!" }]}
           >
-            <Input prefix={<LockOutlined />} placeholder="Email" />
+            <Input prefix={<MailOutlined />} placeholder="Email" />
           </Form.Item>
           <Form.Item
             name="password"

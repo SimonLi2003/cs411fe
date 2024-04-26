@@ -1,14 +1,15 @@
 import { Button, Modal, Form, Input, message } from "antd";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { useState } from "react";
 
 import { Login } from "../utils";
 
 interface Props {
-  onSuccess: () => void;
+  signInOnSuccess: () => void;
+  loginSetUserID: (userID: number) => void;
 }
 
-function LoginComponent({ onSuccess }: Props) {
+function LoginComponent({ signInOnSuccess, loginSetUserID }: Props) {
   const [displayModal, setDisplayModal] = useState(false);
   const [form] = Form.useForm();
 
@@ -18,10 +19,11 @@ function LoginComponent({ onSuccess }: Props) {
 
   const onFinish = (form: any) => {
     Login(form)
-      .then(() => {
+      .then((userID: number) => {
         setDisplayModal(false);
         message.success("Successfully Login!");
-        onSuccess();
+        signInOnSuccess();
+        loginSetUserID(userID);
       })
       .catch((err) => {
         message.error(err.message);
@@ -41,7 +43,7 @@ function LoginComponent({ onSuccess }: Props) {
       </Button>
 
       <Modal
-        title="SignUp"
+        title="Login"
         open={displayModal}
         onCancel={onCancel}
         footer={null}
@@ -56,7 +58,7 @@ function LoginComponent({ onSuccess }: Props) {
             name="email"
             rules={[{ required: true, message: "Please input your Email!" }]}
           >
-            <Input prefix={<LockOutlined />} placeholder="Email" />
+            <Input prefix={<MailOutlined />} placeholder="Email" />
           </Form.Item>
           <Form.Item
             name="password"
