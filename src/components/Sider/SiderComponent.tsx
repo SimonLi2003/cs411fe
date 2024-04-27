@@ -1,4 +1,4 @@
-import { Menu, Layout, Button, MenuProps } from "antd";
+import { Layout, Menu, MenuProps } from "antd";
 const { Sider } = Layout;
 
 interface Props {

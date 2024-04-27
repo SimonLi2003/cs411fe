@@ -1,8 +1,8 @@
+import { Layout } from "antd";
 import { useState } from "react";
-import { Layout, Menu } from "antd";
+import ContentComponent from "./components/Content/ContentComponent";
 import HeaderComponent from "./components/Header/HeaderComponent";
 import SiderComponent from "./components/Sider/SiderComponent";
-import ContentComponent from "./components/Content/ContentComponent";
 
 const { Header, Content, Sider, Footer } = Layout;
 

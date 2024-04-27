@@ -1,6 +1,7 @@
-import { Button, Layout, Modal, Input, Form } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Layout, Modal, Space } from "antd";
 import { useState } from "react";
+import TableComponent from "./TableComponent";
 const { Content } = Layout;
 
 interface Props {
@@ -67,14 +68,17 @@ function ContentComponent({ selectedMenuItem }: Props) {
           </Form.Item>
         </Form>
       </Modal>
-      <Button
-        icon={<SearchOutlined />}
-        shape="round"
-        onClick={searchOnClick}
-        style={{ width: "1000px", marginLeft: "75px" }}
-      >
-        {selectedMenuItem == 1 ? "Search Recipe" : "Search Ingredients"}
-      </Button>
+      <Space direction="vertical" size={30}>
+        <Button
+          icon={<SearchOutlined />}
+          shape="round"
+          onClick={searchOnClick}
+          style={{ width: "1000px", marginLeft: "75px" }}
+        >
+          {selectedMenuItem == 1 ? "Search Recipe" : "Search Ingredients"}
+        </Button>
+        <TableComponent />
+      </Space>
     </Content>
   );
 }

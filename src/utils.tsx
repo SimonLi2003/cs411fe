@@ -79,3 +79,18 @@ export const DeleteUser = (userID: number) => {
     }
   });
 };
+
+const getRecipeURL = "http://localhost:8080/api/v1/recipe/allRecipes";
+export const GetRecipe = (totalRecipeSize: number) => {
+  const formData = new FormData();
+  formData.append("skipRowsOffset", totalRecipeSize.toString());
+  return fetch(getRecipeURL, {
+    method: "POST",
+    body: formData,
+  }).then((response) => {
+    if (response.status !== 200) {
+      throw Error("Fail to load Recipes");
+    }
+    return response.json();
+  });
+};
