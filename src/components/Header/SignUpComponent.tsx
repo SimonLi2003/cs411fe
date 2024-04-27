@@ -1,11 +1,11 @@
 import { Button, Form, FormInstance, Modal, message, Input } from "antd";
 import { LockOutlined, UserOutlined, MailOutlined } from "@ant-design/icons";
-import { signUp } from "../utils";
+import { signUp } from "../../utils";
 import { useState } from "react";
 
 function SignUpComponent() {
   const [displayModal, setDisplayModal] = useState(false);
-	const [form] = Form.useForm();
+  const [form] = Form.useForm();
 
   const onFinish = (form: any) => {
     signUp(form)

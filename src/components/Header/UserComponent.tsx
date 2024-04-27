@@ -1,7 +1,7 @@
 import { Button, Drawer, Form, Input, Divider, message } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { DeleteUser, UpdateAll } from "../utils";
+import { DeleteUser, UpdateAll } from "../../utils";
 
 interface Props {
   userID: number;

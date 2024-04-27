@@ -22,8 +22,11 @@ function HeaderComponent({
   loginSetUserID,
 }: Props) {
   return (
-    <Header>
-      <Row justify={"end"}>
+    <Header style={{ background: "#00325f" }}>
+      <Row justify={"space-between"}>
+        <p className="fs-1 text-white">
+          Ultimate Cooker
+        </p>
         {isLoggedIn && (
           <Col>
             <UserComponent userID={userID} signOutOnClick={signOutOnClick} />

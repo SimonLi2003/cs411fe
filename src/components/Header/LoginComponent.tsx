@@ -2,7 +2,7 @@ import { Button, Modal, Form, Input, message } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { useState } from "react";
 
-import { Login } from "../utils";
+import { Login } from "../../utils";
 
 interface Props {
   signInOnSuccess: () => void;
