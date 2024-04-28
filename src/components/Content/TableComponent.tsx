@@ -1,7 +1,8 @@
-import { Table, TableProps, GetProp } from "antd";
+import { Table, TableProps, GetProp, Drawer } from "antd";
 import { useEffect, useState } from "react";
 
 import { GetRecipe } from "../../utils";
+import RecipeDrawer from "./RecipeDrawer";
 
 interface DataType {
   recipeID: number;
@@ -19,44 +20,7 @@ interface TableParams {
   pagination: TablePaginationConfig;
 }
 
-const columns: TableProps<DataType>["columns"] = [
-  {
-    title: "Recipe Name",
-    dataIndex: "recipeName",
-    key: "name",
-    showSorterTooltip: { target: "full-header" },
-    sorter: (a, b) => a.recipeName.localeCompare(b.recipeName),
-  },
-  {
-    title: "Recipe Type",
-    dataIndex: "recipeType",
-    key: "type",
-    filters: [
-      {
-        text: "breakfast",
-        value: "breakfast",
-      },
-      {
-        text: "lunch",
-        value: "lunch",
-      },
-      {
-        text: "dinner",
-        value: "dinner",
-      },
-    ],
-    onFilter: (value, record) =>
-      record.recipeType.indexOf(value as string) === 0,
-  },
-  {
-    title: "Owner Email",
-    dataIndex: "userEmail",
-    key: "email",
-  },
-];
-
 function TableComponent() {
-  const [recipeArray, setRecipeArray] = useState<DataType[]>([]);
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -65,10 +29,74 @@ function TableComponent() {
       showSizeChanger: false,
     },
   });
+  const [recipeArray, setRecipeArray] = useState<DataType[]>([]);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [currentSelectedRecipeID, setCurrentSelectedRecipeID] = useState(1);
+  const [currentSelectedRecipeName, setCurrentSelectedRecipeName] =
+    useState("21 apple pie");
+  const [isTableLoading, setIsTableLoading] = useState(false);
+
+  const columns: TableProps<DataType>["columns"] = [
+    {
+      title: "Recipe Name",
+      dataIndex: "recipeName",
+      key: "name",
+      showSorterTooltip: { target: "full-header" },
+      sorter: (a, b) => a.recipeName.localeCompare(b.recipeName),
+      render(value, record) {
+        return (
+          <a
+            onClick={() => recipeNameOnClick(record.recipeID, record.recipeName)}
+            className="text-primary"
+            style={{ textDecoration: "none" }}
+          >
+            {value}
+          </a>
+        );
+      },
+    },
+    {
+      title: "Recipe Type",
+      dataIndex: "recipeType",
+      key: "type",
+      filters: [
+        {
+          text: "breakfast",
+          value: "breakfast",
+        },
+        {
+          text: "lunch",
+          value: "lunch",
+        },
+        {
+          text: "dinner",
+          value: "dinner",
+        },
+      ],
+      onFilter: (value, record) =>
+        record.recipeType.indexOf(value as string) === 0,
+    },
+    {
+      title: "Owner Email",
+      dataIndex: "userEmail",
+      key: "email",
+    },
+  ];
+
+  const recipeNameOnClick = (recipeID: number, recipeName: string) => {
+    setCurrentSelectedRecipeID(recipeID);
+    setCurrentSelectedRecipeName(recipeName);
+    setIsDrawerOpen(true);
+  };
+
+  const closeDrawerOnClick = () => {
+    setIsDrawerOpen(false);
+  };
 
   const loadMoreRecipeData = () => {
     GetRecipe(recipeArray.length).then((jsonData) => {
       setRecipeArray(recipeArray.concat(jsonData));
+      setIsTableLoading(false);
     });
   };
 
@@ -84,6 +112,7 @@ function TableComponent() {
   };
 
   useEffect(() => {
+    setIsTableLoading(true);
     loadMoreRecipeData();
   }, []);
 
@@ -98,17 +127,28 @@ function TableComponent() {
     }
   }, [tableParams.pagination]);
 
+  useEffect(() => {}, [currentSelectedRecipeID]);
+
   return (
-    <Table
-      bordered={true}
-      columns={columns}
-      dataSource={recipeArray}
-      showSorterTooltip={{ target: "sorter-icon" }}
-      style={{ marginLeft: "75px", overflow: "auto" }}
-      pagination={tableParams.pagination}
-      rowKey="recipeID"
-      onChange={tableOnChange}
-    ></Table>
+    <>
+      <Table
+        bordered={true}
+        columns={columns}
+        dataSource={recipeArray}
+        showSorterTooltip={{ target: "sorter-icon" }}
+        style={{ marginLeft: "75px", overflow: "auto" }}
+        pagination={tableParams.pagination}
+        rowKey="recipeID"
+        onChange={tableOnChange}
+        loading={isTableLoading}
+      ></Table>
+      <RecipeDrawer
+        isDrawerOpen={isDrawerOpen}
+        currentSelectedRecipeID={currentSelectedRecipeID}
+        currentSelectedRecipeName={currentSelectedRecipeName}
+        closeDrawerOnClick={closeDrawerOnClick}
+      />
+    </>
   );
 }
 
