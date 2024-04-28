@@ -80,11 +80,41 @@ export const DeleteUser = (userID: number) => {
   });
 };
 
-const getRecipeURL = "http://localhost:8080/api/v1/recipe/allRecipes";
+const getRecipeURL = `${SERVER_ORIGIN}/recipe/allRecipes`;
 export const GetRecipe = (totalRecipeSize: number) => {
   const formData = new FormData();
   formData.append("skipRowsOffset", totalRecipeSize.toString());
   return fetch(getRecipeURL, {
+    method: "POST",
+    body: formData,
+  }).then((response) => {
+    if (response.status !== 200) {
+      throw Error("Fail to load Recipes");
+    }
+    return response.json();
+  });
+};
+
+const getIngredientsURL = `${SERVER_ORIGIN}/recipeIncludeIngredient/getIngredientsWithRecipeID`;
+export const GetIngredients = (recipeID: number) => {
+  const formData = new FormData();
+  formData.append("recipeID", recipeID.toString());
+  return fetch(getIngredientsURL, {
+    method: "POST",
+    body: formData,
+  }).then((response) => {
+    if (response.status !== 200) {
+      throw Error("Fail to load Recipes");
+    }
+    return response.json();
+  });
+};
+
+const getNutritionURL = `${SERVER_ORIGIN}/nutrition/getNutritionWithRecipeID`;
+export const GetNutrition = (recipeID: number) => {
+  const formData = new FormData();
+  formData.append("recipeID", recipeID.toString());
+  return fetch(getNutritionURL, {
     method: "POST",
     body: formData,
   }).then((response) => {
