@@ -1,4 +1,4 @@
-import { Drawer, List, Divider } from "antd";
+import { Drawer, List, Divider, message } from "antd";
 import { useEffect, useState } from "react";
 
 import { GetIngredients, GetNutrition } from "../../utils";
@@ -35,33 +35,43 @@ function RecipeDrawer({
   const [isNutritionArrayLoading, setNutritionArrayLoading] = useState(false);
 
   const loadIngredients = (recipeID: number) => {
-    GetIngredients(recipeID).then((jsonData) => {
-      setIngredientArray(jsonData);
-      setIngredientArrayLoading(false);
-    });
+    GetIngredients(recipeID)
+      .then((jsonData) => {
+        setIngredientArray(jsonData);
+        setIngredientArrayLoading(false);
+      })
+      .catch((err) => {
+        message.error(err.message);
+        setIngredientArrayLoading(false);
+      });
   };
 
   const loadNutrution = (recipeID: number) => {
-    GetNutrition(recipeID).then((response: any) => {
-      setNutritionArray([
-        {
-          nutritionName: "Calorie",
-          data: response.calorie,
-          unit: "(kCal)",
-        },
-        {
-          nutritionName: "Carbon Hydrate",
-          data: response.carbonHydrate,
-          unit: "(grams)",
-        },
-        {
-          nutritionName: "Fat",
-          data: response.fat,
-          unit: "(grams)",
-        },
-      ]);
-      setNutritionArrayLoading(false);
-    });
+    GetNutrition(recipeID)
+      .then((response: any) => {
+        setNutritionArray([
+          {
+            nutritionName: "Calorie",
+            data: response.calorie,
+            unit: "(kCal)",
+          },
+          {
+            nutritionName: "Carbon Hydrate",
+            data: response.carbonHydrate,
+            unit: "(grams)",
+          },
+          {
+            nutritionName: "Fat",
+            data: response.fat,
+            unit: "(grams)",
+          },
+        ]);
+        setNutritionArrayLoading(false);
+      })
+      .catch((err) => {
+        // message.error(err.message);
+        setNutritionArrayLoading(false);
+      });
   };
 
   useEffect(() => {

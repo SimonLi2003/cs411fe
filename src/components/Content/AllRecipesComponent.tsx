@@ -1,4 +1,4 @@
-import { Table, TableProps, GetProp, Drawer } from "antd";
+import { Table, TableProps, GetProp, message } from "antd";
 import { useEffect, useState } from "react";
 
 import { GetRecipe } from "../../utils";
@@ -20,7 +20,7 @@ interface TableParams {
   pagination: TablePaginationConfig;
 }
 
-function TableComponent() {
+function AllRecipesComponent() {
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -46,7 +46,9 @@ function TableComponent() {
       render(value, record) {
         return (
           <a
-            onClick={() => recipeNameOnClick(record.recipeID, record.recipeName)}
+            onClick={() =>
+              recipeNameOnClick(record.recipeID, record.recipeName)
+            }
             className="text-primary"
             style={{ textDecoration: "none" }}
           >
@@ -94,10 +96,15 @@ function TableComponent() {
   };
 
   const loadMoreRecipeData = () => {
-    GetRecipe(recipeArray.length).then((jsonData) => {
-      setRecipeArray(recipeArray.concat(jsonData));
-      setIsTableLoading(false);
-    });
+    GetRecipe(recipeArray.length)
+      .then((jsonData) => {
+        setRecipeArray(recipeArray.concat(jsonData));
+        setIsTableLoading(false);
+      })
+      .catch((err) => {
+        message.error(err.message);
+        setIsTableLoading(false);
+      });
   };
 
   const tableOnChange = (newPagination: TablePaginationConfig) => {
@@ -136,7 +143,7 @@ function TableComponent() {
         columns={columns}
         dataSource={recipeArray}
         showSorterTooltip={{ target: "sorter-icon" }}
-        style={{ marginLeft: "75px", overflow: "auto" }}
+        style={{ marginLeft: "75px", overflow: "auto", width: "1000px"}}
         pagination={tableParams.pagination}
         rowKey="recipeID"
         onChange={tableOnChange}
@@ -152,4 +159,4 @@ function TableComponent() {
   );
 }
 
-export default TableComponent;
+export default AllRecipesComponent;

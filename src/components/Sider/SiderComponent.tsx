@@ -7,19 +7,18 @@ interface Props {
 
 function SiderComponent({ updateSelectedMenuItem }: Props) {
   type MenuItem = Required<MenuProps>["items"][number];
-  function getItem(
-    label: React.ReactNode,
-    key: React.Key,
-    icon?: React.ReactNode
-  ): MenuItem {
+  function getItem(label: React.ReactNode, key: React.Key): MenuItem {
     return {
       key,
-      icon,
       label,
     } as MenuItem;
   }
 
-  const items: MenuItem[] = [getItem("Recipes", 1), getItem("Ingredients", 2)];
+  const items: MenuItem[] = [
+    getItem("All Recipes", 1),
+    getItem("Search Recipe", 2),
+    getItem("Ingredients", 3),
+  ];
 
   const menuItemOnClick = (item: MenuItem) => {
     updateSelectedMenuItem(item?.key);

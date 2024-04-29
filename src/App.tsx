@@ -10,7 +10,7 @@ function App() {
   // TODO: change loggin state back to false
   const [isLoggedIn, setLoggedInStatus] = useState(false);
   const [userID, setUserID] = useState(-1);
-  const [selectedMenuItem, setSelectedMenuItem] = useState(1);
+  const [selectedMenuItem, setSelectedMenuItem] = useState("1");
 
   const signInOnSuccess = () => {
     setLoggedInStatus(true);
@@ -24,7 +24,7 @@ function App() {
     setUserID(userID);
   };
 
-  const updateSelectedMenuItem = (key: number) => {
+  const updateSelectedMenuItem = (key: string) => {
     setSelectedMenuItem(key);
   };
 

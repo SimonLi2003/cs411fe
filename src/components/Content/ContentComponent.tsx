@@ -1,37 +1,13 @@
-import { SearchOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Layout, Modal, Space } from "antd";
-import { useState } from "react";
-import TableComponent from "./TableComponent";
+import { Layout } from "antd";
+import AllRecipesComponent from "./AllRecipesComponent";
+import SearchRecipesComponent from "./SearchRecipesComponent";
 const { Content } = Layout;
 
 interface Props {
-  selectedMenuItem: number;
+  selectedMenuItem: string;
 }
 
 function ContentComponent({ selectedMenuItem }: Props) {
-  const [displayModal, setDisplayModal] = useState(false);
-  const [form] = Form.useForm();
-  const [submitButtonLoading, setSubmitButtonLoading] = useState(false);
-
-  // TODO
-  const formOnFinish = () => {
-    // call method in utils
-    // set submit button is loading to true until receive the response from the server
-    // close the modal only when receive response from server
-    setSubmitButtonLoading(true);
-
-    setDisplayModal(false);
-    setSubmitButtonLoading(false);
-  };
-
-  const searchOnClick = () => {
-    setDisplayModal(true);
-  };
-
-  const modalOnCancel = () => {
-    setDisplayModal(false);
-  };
-
   return (
     <Content
       style={{
@@ -42,43 +18,8 @@ function ContentComponent({ selectedMenuItem }: Props) {
         overflow: "auto",
       }}
     >
-      <Modal
-        title="Search"
-        open={displayModal}
-        onCancel={modalOnCancel}
-        footer={null}
-        destroyOnClose={true}
-      >
-        <Form form={form} onFinish={formOnFinish}>
-          <Form.Item>
-            <Input
-              placeholder={
-                selectedMenuItem == 1 ? "Recipe Name" : "Ingredients Name"
-              }
-            />
-          </Form.Item>
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={submitButtonLoading}
-            >
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
-      <Space direction="vertical" size={30}>
-        <Button
-          icon={<SearchOutlined />}
-          shape="round"
-          onClick={searchOnClick}
-          style={{ width: "1000px", marginLeft: "75px" }}
-        >
-          {selectedMenuItem == 1 ? "Search Recipe" : "Search Ingredients"}
-        </Button>
-        <TableComponent />
-      </Space>
+      {selectedMenuItem === "1" && <AllRecipesComponent />}
+      {selectedMenuItem === "2" && <SearchRecipesComponent />}
     </Content>
   );
 }

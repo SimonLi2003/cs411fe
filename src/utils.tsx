@@ -1,4 +1,4 @@
-const SERVER_ORIGIN = "http://localhost:8080/api/v1";
+const SERVER_ORIGIN = "/api/v1";
 
 const signUpURL = `${SERVER_ORIGIN}/user/add`;
 export const signUp = (credential: any) => {
@@ -10,7 +10,7 @@ export const signUp = (credential: any) => {
   return fetch(signUpURL, {
     method: "POST",
     body: formData,
-  }).then((response) => {
+  }).then((response) => { 
     if (response.status !== 200) {
       throw Error("Fail to register");
     }
@@ -85,6 +85,22 @@ export const GetRecipe = (totalRecipeSize: number) => {
   const formData = new FormData();
   formData.append("skipRowsOffset", totalRecipeSize.toString());
   return fetch(getRecipeURL, {
+    method: "POST",
+    body: formData,
+  }).then((response) => {
+    if (response.status !== 200) {
+      throw Error("Fail to load Recipes");
+    }
+    return response.json();
+  });
+};
+
+const getRecipeWithRecipeNameURL = `${SERVER_ORIGIN}/recipe/getRecipeWithRecipeName`;
+export const getRecipeWithRecipeName = (form: any, skipRowOffset: number) => {
+  const formData = new FormData();
+  formData.append("recipeName", form.recipeName);
+  formData.append("skipRowsOffset", skipRowOffset.toString());
+  return fetch(getRecipeWithRecipeNameURL, {
     method: "POST",
     body: formData,
   }).then((response) => {
